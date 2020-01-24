@@ -1,20 +1,18 @@
-// @flow
-
 import * as actionTypes from '../constants/action-types';
 
-import type { Action } from '../actions';
-import type { QueryKey, ResponseHeaders, Status } from '../types';
+import { Action } from '../actions';
+import { QueryKey, ResponseHeaders, Status } from '../types';
 
 export type State = {
-  [key: QueryKey]: {|
-    headers?: ?ResponseHeaders,
-    isFinished: boolean,
-    isMutation: boolean,
-    isPending: boolean,
-    lastUpdated?: number,
-    queryCount: number,
-    status?: Status,
-  |},
+  [key: string]: {
+    headers?: ResponseHeaders | undefined;
+    isFinished: boolean;
+    isMutation: boolean;
+    isPending: boolean;
+    lastUpdated?: number;
+    queryCount: number;
+    status?: Status;
+  };
 };
 
 const initialState = {};

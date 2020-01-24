@@ -1,43 +1,44 @@
-// @flow
-
 import idx from 'idx';
 
-import type { State as ErrorsState } from '../reducers/errors';
+import { State as ErrorsState } from '../reducers/errors';
 import { getQueryKey } from '../lib/query-key';
-import type { QueryConfig } from '../types';
+import { QueryConfig } from '../types';
 
 export const responseBody = (
   errorsState: ErrorsState,
   queryConfig: QueryConfig,
-): ?{ [key: string]: any } => {
+): { [key: string]: any } | undefined => {
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
     return null;
   }
 
-  return idx(errorsState, _ => _[queryKey].responseBody);
+  return idx(errorsState, (_: any) => _[queryKey].responseBody);
 };
 
-export const responseText = (errorsState: ErrorsState, queryConfig: QueryConfig): ?string => {
+export const responseText = (
+  errorsState: ErrorsState,
+  queryConfig: QueryConfig,
+): string | undefined => {
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
     return null;
   }
 
-  return idx(errorsState, _ => _[queryKey].responseText);
+  return idx(errorsState, (_: any) => _[queryKey].responseText);
 };
 
 export const responseHeaders = (
   errorsState: ErrorsState,
   queryConfig: QueryConfig,
-): ?{ [key: string]: any } => {
+): { [key: string]: any } | undefined => {
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
     return null;
   }
 
-  return idx(errorsState, _ => _[queryKey].responseHeaders);
+  return idx(errorsState, (_: any) => _[queryKey].responseHeaders);
 };

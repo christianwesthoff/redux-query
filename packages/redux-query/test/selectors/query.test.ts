@@ -1,5 +1,6 @@
 import { getQueryKey } from '../../src/lib/query-key';
 import * as querySelectors from '../../src/selectors/query';
+import { State } from '../../src/reducers/entities';
 
 describe('query selectors', () => {
   describe('isFinished', () => {
@@ -16,7 +17,7 @@ describe('query selectors', () => {
           [queryKey]: {
             isFinished: true,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(isFinished).toBe(true);
@@ -35,7 +36,7 @@ describe('query selectors', () => {
           myQueryKey: {
             isFinished: true,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(isFinished).toBe(true);
@@ -56,7 +57,7 @@ describe('query selectors', () => {
           [queryKey]: {
             isPending: true,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(isPending).toBe(true);
@@ -75,7 +76,7 @@ describe('query selectors', () => {
           myQueryKey: {
             isPending: true,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(isPending).toBe(true);
@@ -96,7 +97,7 @@ describe('query selectors', () => {
           [queryKey]: {
             status: 200,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(status).toEqual(200);
@@ -115,7 +116,7 @@ describe('query selectors', () => {
           myQueryKey: {
             status: 200,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(status).toEqual(200);
@@ -136,7 +137,7 @@ describe('query selectors', () => {
           [queryKey]: {
             lastUpdated: 1488471746117,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(lastUpdated).toEqual(1488471746117);
@@ -155,7 +156,7 @@ describe('query selectors', () => {
           myQueryKey: {
             lastUpdated: 1488471746117,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(lastUpdated).toEqual(1488471746117);
@@ -176,7 +177,7 @@ describe('query selectors', () => {
           [queryKey]: {
             queryCount: 2,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(queryCount).toEqual(2);
@@ -195,7 +196,7 @@ describe('query selectors', () => {
           myQueryKey: {
             queryCount: 2,
           },
-        },
+        } as State,
         queryConfig,
       );
       expect(queryCount).toEqual(2);

@@ -1,8 +1,6 @@
-// @flow
-
 import stringify from 'json-stable-stringify';
 
-import type { QueryKeyGetter } from '../types';
+import { QueryKeyGetter } from '../types';
 
 export const getQueryKey: QueryKeyGetter = queryConfig => {
   if (!queryConfig) {
@@ -14,6 +12,6 @@ export const getQueryKey: QueryKeyGetter = queryConfig => {
   if (queryKey !== null && queryKey !== undefined) {
     return queryKey;
   } else {
-    return (stringify({ url, body }): string);
+    return stringify({ url, body }) as string;
   }
 };

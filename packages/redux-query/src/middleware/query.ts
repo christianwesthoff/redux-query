@@ -1,5 +1,3 @@
-// @flow
-
 import Backoff from 'backo';
 import idx from 'idx';
 
@@ -12,39 +10,39 @@ import {
   mutateSuccess,
 } from '../actions';
 import * as actionTypes from '../constants/action-types';
-import httpMethods from '../constants/http-methods';
+import httpMethods, { HttpMethod } from '../constants/http-methods';
 import * as statusCodes from '../constants/status-codes';
 import { getQueryKey } from '../lib/query-key';
 import { updateEntities, optimisticUpdateEntities, rollbackEntities } from '../lib/update';
 import { pick } from '../lib/object';
 
-import type { Action, PublicAction } from '../actions';
-import type {
+import { Action, PublicAction } from '../actions';
+import {
   ActionPromiseValue,
   EntitiesSelector,
   NetworkHandler,
   NetworkInterface,
   QueriesSelector,
-  QueryKey,
   ResponseBody,
   Status,
   Transform,
+  Entities,
 } from '../types';
-import type { State as QueriesState } from '../reducers/queries';
+import { State as QueriesState } from '../reducers/queries';
 
-type Config = {|
-  backoff: {|
-    maxAttempts: number,
-    minDuration: number,
-    maxDuration: number,
-  |},
-  retryableStatusCodes: Array<Status>,
-|};
+type Config = {
+  backoff: {
+    maxAttempts: number;
+    minDuration: number;
+    maxDuration: number;
+  };
+  retryableStatusCodes: Array<Status>;
+};
 
-type ReduxStore = {|
-  dispatch: (action: Action) => any,
-  getState: () => any,
-|};
+type ReduxStore = {
+  dispatch: (action: Action) => any;
+  getState: () => any;
+};
 
 type Next = (action: PublicAction) => any;
 
@@ -64,7 +62,7 @@ const defaultConfig: Config = {
 };
 
 const getPendingQueries = (queries: QueriesState): QueriesState => {
-  const pendingQueries = {};
+  const pendingQueries: QueriesState = {};
 
   for (const queryKey in queries) {
     if (queries.hasOwnProperty(queryKey)) {
@@ -79,21 +77,21 @@ const getPendingQueries = (queries: QueriesState): QueriesState => {
   return pendingQueries;
 };
 
-const isStatusOk = (status: ?Status): boolean => {
+const isStatusOk = (status?: Status | undefined): boolean => {
   return status !== null && status !== undefined && status >= 200 && status < 300;
 };
 
-const defaultTransform: Transform = (body: ?ResponseBody) => body || {};
+const defaultTransform: Transform = (body?: ResponseBody | undefined) => body || {};
 
 const queryMiddleware = (
   networkInterface: NetworkInterface,
   queriesSelector: QueriesSelector,
   entitiesSelector: EntitiesSelector,
-  customConfig: ?Config,
+  customConfig?: Config | undefined,
 ) => {
-  const networkHandlersByQueryKey: { [key: QueryKey]: NetworkHandler } = {};
+  const networkHandlersByQueryKey: { [key: string]: NetworkHandler } = {};
 
-  const abortQuery = queryKey => {
+  const abortQuery = (queryKey: string) => {
     const networkHandler = networkHandlersByQueryKey[queryKey];
 
     if (networkHandler) {
@@ -137,14 +135,14 @@ const queryMiddleware = (
         const queries = queriesSelector(state);
 
         const queriesState = queries[queryKey];
-        const isPending = idx(queriesState, _ => _.isPending);
-        const status = idx(queriesState, _ => _.status);
+        const isPending = idx(queriesState, (_: any) => _.isPending);
+        const status = idx(queriesState, (_: any) => _.status);
         const hasSucceeded = isStatusOk(status);
 
         if (force || !queriesState || (retry && !isPending && !hasSucceeded)) {
           returnValue = new Promise<ActionPromiseValue>(resolve => {
             const start = new Date();
-            const { method = httpMethods.GET } = options;
+            const { method = httpMethods.GET as HttpMethod } = options;
             let attempts = 0;
             const backoff = new Backoff({
               min: config.backoff.minDuration,
@@ -182,7 +180,7 @@ const queryMiddleware = (
                 }
 
                 const end = new Date();
-                const duration = end - start;
+                const duration = +end - +start;
                 let transformed;
                 let newEntities;
 
@@ -272,7 +270,7 @@ const queryMiddleware = (
 
         const initialState = getState();
         const initialEntities = entitiesSelector(initialState);
-        let optimisticEntities;
+        let optimisticEntities: Entities;
 
         if (optimisticUpdate) {
           optimisticEntities = optimisticUpdateEntities(optimisticUpdate, initialEntities);
@@ -290,7 +288,7 @@ const queryMiddleware = (
 
         returnValue = new Promise<ActionPromiseValue>(resolve => {
           const start = new Date();
-          const { method = httpMethods.POST } = options;
+          const { method = httpMethods.POST as HttpMethod } = options;
 
           const networkHandler = networkInterface(url, method, {
             body,
@@ -314,7 +312,7 @@ const queryMiddleware = (
 
           networkHandler.execute((err, status, responseBody, responseText, responseHeaders) => {
             const end = new Date();
-            const duration = end - start;
+            const duration = +end - +start;
             const state = getState();
             const entities = entitiesSelector(state);
             let transformed;

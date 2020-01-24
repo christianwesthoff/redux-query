@@ -1,5 +1,6 @@
 import * as actionTypes from '../../src/constants/action-types';
 import entities from '../../src/reducers/entities';
+import { Action } from '../../src/actions';
 
 describe('entities reducer', () => {
   test('should handle REQUEST_SUCCESS', () => {
@@ -12,7 +13,7 @@ describe('entities reducer', () => {
     const prevState = {
       user: 'ryanashcraft',
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {
       message: 'hello, world!',
       user: 'ryanashcraft',
@@ -30,7 +31,7 @@ describe('entities reducer', () => {
     const prevState = {
       user: 'ryanashcraft',
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {
       message: 'hello, world!',
       user: 'ryanashcraft',
@@ -49,7 +50,7 @@ describe('entities reducer', () => {
       message: 'hello, world!',
       user: 'ryanashcraft',
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {
       message: 'hello, optimistic world!',
       user: 'ryanashcraft',
@@ -68,7 +69,7 @@ describe('entities reducer', () => {
       message: 'hello, optimistic world!',
       user: 'ryanashcraft',
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {
       message: 'hello, world!',
       user: 'ryanashcraft',
@@ -84,13 +85,13 @@ describe('entities reducer', () => {
       message: 'hello, world!',
       user: 'ryanashcraft',
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {};
     expect(newEntities).toEqual(expectedEntities);
   });
 
   test('should handle UPDATE_ENTITIES', () => {
-    const action = {
+    const action: Action = {
       type: actionTypes.UPDATE_ENTITIES,
       update: {
         some: value => ({
@@ -146,7 +147,7 @@ describe('entities reducer', () => {
         },
       },
     };
-    const newEntities = entities(prevState, action);
+    const newEntities = entities(prevState, action as any);
     const expectedEntities = {
       some: {
         thing: {},

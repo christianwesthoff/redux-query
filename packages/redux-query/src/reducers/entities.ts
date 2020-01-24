@@ -1,5 +1,3 @@
-// @flow
-
 import {
   MUTATE_FAILURE,
   MUTATE_START,
@@ -10,10 +8,11 @@ import {
 } from '../constants/action-types';
 import { optimisticUpdateEntities } from '../lib/update';
 
-import type { Action } from '../actions';
+import { Action } from '../actions';
+import { OptimisticUpdate } from '../types';
 
 export type State = {
-  [key: string]: any,
+  [key: string]: any;
 };
 
 const initialState = {};
@@ -39,7 +38,7 @@ const entities = (state: State = initialState, action: Action) => {
   } else if (action.type === UPDATE_ENTITIES) {
     return {
       ...state,
-      ...optimisticUpdateEntities(action.update, state),
+      ...optimisticUpdateEntities(action.update as OptimisticUpdate, state),
     };
   } else {
     return state;

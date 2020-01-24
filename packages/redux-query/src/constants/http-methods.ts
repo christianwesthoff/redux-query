@@ -1,5 +1,3 @@
-// @flow
-
 const HttpMethods = {
   DELETE: 'DELETE',
   GET: 'GET',
@@ -9,6 +7,8 @@ const HttpMethods = {
   PATCH: 'PATCH',
 };
 
-export type HttpMethod = $Keys<typeof HttpMethods>;
+export type HttpMethods = typeof HttpMethods;
+
+export type HttpMethod = keyof HttpMethods;
 
 export default HttpMethods;

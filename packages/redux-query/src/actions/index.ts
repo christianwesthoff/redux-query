@@ -1,8 +1,6 @@
-// @flow
-
 import * as actionTypes from '../constants/action-types';
 
-import type {
+import {
   Duration,
   Entities,
   Meta,
@@ -17,17 +15,16 @@ import type {
   Url,
 } from '../types';
 
-type RequestStartParams = {|
-  body: RequestBody,
-  meta: ?Meta,
-  queryKey: QueryKey,
-  url: Url,
-|};
+type RequestStartParams = {
+  body: RequestBody;
+  meta?: Meta | undefined;
+  queryKey: QueryKey;
+  url: Url;
+};
 
-type RequestStartAction = {|
-  type: '@@query/REQUEST_START',
-  ...RequestStartParams,
-|};
+type RequestStartAction = {
+  type: '@@query/REQUEST_START';
+} & RequestStartParams;
 
 export const requestStart = ({
   body,
@@ -44,24 +41,23 @@ export const requestStart = ({
   };
 };
 
-type RequestSuccessParams = {|
-  body: RequestBody,
-  duration: Duration,
-  entities: Entities,
-  meta: ?Meta,
-  responseBody: ?ResponseBody,
-  responseHeaders: ?ResponseHeaders,
-  responseText: ?ResponseText,
-  queryKey: QueryKey,
-  status: Status,
-  url: Url,
-|};
+type RequestSuccessParams = {
+  body: RequestBody;
+  duration: Duration;
+  entities: Entities;
+  meta?: Meta | undefined;
+  responseBody?: ResponseBody | undefined;
+  responseHeaders?: ResponseHeaders | undefined;
+  responseText?: ResponseText | undefined;
+  queryKey: QueryKey;
+  status: Status;
+  url: Url;
+};
 
-type RequestSuccessAction = {|
-  type: '@@query/REQUEST_SUCCESS',
-  ...RequestSuccessParams,
-  time: number,
-|};
+type RequestSuccessAction = {
+  type: '@@query/REQUEST_SUCCESS';
+  time: number;
+} & RequestSuccessParams;
 
 export const requestSuccess = ({
   body,
@@ -91,23 +87,22 @@ export const requestSuccess = ({
   };
 };
 
-type RequestFailureParams = {|
-  body: RequestBody,
-  duration: Duration,
-  meta: ?Meta,
-  responseBody: ?ResponseBody,
-  responseHeaders: ?ResponseHeaders,
-  responseText: ?ResponseText,
-  queryKey: QueryKey,
-  status: Status,
-  url: Url,
-|};
+type RequestFailureParams = {
+  body: RequestBody;
+  duration: Duration;
+  meta?: Meta | undefined;
+  responseBody?: ResponseBody | undefined;
+  responseHeaders?: ResponseHeaders | undefined;
+  responseText?: ResponseText | undefined;
+  queryKey: QueryKey;
+  status: Status;
+  url: Url;
+};
 
-type RequestFailureAction = {|
-  type: '@@query/REQUEST_FAILURE',
-  ...RequestFailureParams,
-  time: number,
-|};
+type RequestFailureAction = {
+  type: '@@query/REQUEST_FAILURE';
+  time: number;
+} & RequestFailureParams;
 
 export const requestFailure = ({
   body,
@@ -135,18 +130,17 @@ export const requestFailure = ({
   };
 };
 
-type MutateStartParams = {|
-  body: RequestBody,
-  meta: ?Meta,
-  optimisticEntities: Entities,
-  queryKey: QueryKey,
-  url: Url,
-|};
+type MutateStartParams = {
+  body: RequestBody;
+  meta?: Meta | undefined;
+  optimisticEntities: Entities;
+  queryKey: QueryKey;
+  url: Url;
+};
 
-type MutateStartAction = {|
-  type: '@@query/MUTATE_START',
-  ...MutateStartParams,
-|};
+type MutateStartAction = {
+  type: '@@query/MUTATE_START';
+} & MutateStartParams;
 
 export const mutateStart = ({
   body,
@@ -165,24 +159,23 @@ export const mutateStart = ({
   };
 };
 
-type MutateSuccessParams = {|
-  body: RequestBody,
-  duration: Duration,
-  entities: Entities,
-  meta: ?Meta,
-  responseBody: ?ResponseBody,
-  responseHeaders: ?ResponseHeaders,
-  responseText: ?ResponseText,
-  queryKey: QueryKey,
-  status: Status,
-  url: Url,
-|};
+type MutateSuccessParams = {
+  body: RequestBody;
+  duration: Duration;
+  entities: Entities;
+  meta?: Meta | undefined;
+  responseBody?: ResponseBody | undefined;
+  responseHeaders?: ResponseHeaders | undefined;
+  responseText?: ResponseText | undefined;
+  queryKey: QueryKey;
+  status: Status;
+  url: Url;
+};
 
-type MutateSuccessAction = {|
-  type: '@@query/MUTATE_SUCCESS',
-  ...MutateSuccessParams,
-  time: number,
-|};
+type MutateSuccessAction = {
+  type: '@@query/MUTATE_SUCCESS';
+  time: number;
+} & MutateSuccessParams;
 
 export const mutateSuccess = ({
   body,
@@ -212,24 +205,23 @@ export const mutateSuccess = ({
   };
 };
 
-type MutateFailureParams = {|
-  body: RequestBody,
-  duration: Duration,
-  meta: ?Meta,
-  responseBody: ?ResponseBody,
-  responseHeaders: ?ResponseHeaders,
-  responseText: ?ResponseText,
-  rolledBackEntities: ?Entities,
-  queryKey: QueryKey,
-  status: Status,
-  url: Url,
-|};
+type MutateFailureParams = {
+  body: RequestBody;
+  duration: Duration;
+  meta?: Meta | undefined;
+  responseBody?: ResponseBody | undefined;
+  responseHeaders?: ResponseHeaders | undefined;
+  responseText?: ResponseText | undefined;
+  rolledBackEntities?: Entities | undefined;
+  queryKey: QueryKey;
+  status: Status;
+  url: Url;
+};
 
-type MutateFailureAction = {|
-  type: '@@query/MUTATE_FAILURE',
-  ...MutateFailureParams,
-  time: number,
-|};
+type MutateFailureAction = {
+  type: '@@query/MUTATE_FAILURE';
+  time: number;
+} & MutateFailureParams;
 
 export const mutateFailure = ({
   body,
@@ -259,10 +251,9 @@ export const mutateFailure = ({
   };
 };
 
-type RequestAsyncAction = {|
-  type: '@@query/REQUEST_ASYNC',
-  ...QueryConfig,
-|};
+type RequestAsyncAction = {
+  type: '@@query/REQUEST_ASYNC';
+} & QueryConfig;
 
 export const requestAsync = ({
   body,
@@ -274,7 +265,7 @@ export const requestAsync = ({
   transform,
   update,
   url,
-  /* eslint-disable-next-line camelcase */
+  /* eslint-disable-next-line @typescript-eslint/camelcase */
   unstable_preDispatchCallback,
 }: QueryConfig): RequestAsyncAction => {
   return {
@@ -288,14 +279,14 @@ export const requestAsync = ({
     transform,
     update,
     url,
+    /* eslint-disable-next-line @typescript-eslint/camelcase */
     unstable_preDispatchCallback,
   };
 };
 
-type MutateAsyncAction = {|
-  type: '@@query/MUTATE_ASYNC',
-  ...QueryConfig,
-|};
+type MutateAsyncAction = {
+  type: '@@query/MUTATE_ASYNC';
+} & QueryConfig;
 
 export const mutateAsync = ({
   body,
@@ -322,10 +313,10 @@ export const mutateAsync = ({
   };
 };
 
-type CancelQueryAction = {|
-  type: '@@query/CANCEL_QUERY',
-  queryKey: ?QueryKey,
-|};
+type CancelQueryAction = {
+  type: '@@query/CANCEL_QUERY';
+  queryKey?: QueryKey | undefined;
+};
 
 export const cancelQuery = (queryKey: QueryKey): CancelQueryAction => {
   return {
@@ -334,10 +325,10 @@ export const cancelQuery = (queryKey: QueryKey): CancelQueryAction => {
   };
 };
 
-type UpdateEntitiesAction = {|
-  type: '@@query/UPDATE_ENTITIES',
-  update: Update,
-|};
+type UpdateEntitiesAction = {
+  type: '@@query/UPDATE_ENTITIES';
+  update: Update;
+};
 
 export const updateEntities = (update: Update): UpdateEntitiesAction => {
   return {
@@ -346,14 +337,14 @@ export const updateEntities = (update: Update): UpdateEntitiesAction => {
   };
 };
 
-type ResetParams = {|
-  entities: Entities,
-|};
+type ResetParams = {
+  entities: Entities;
+};
 
-type ResetAction = {|
-  type: '@@query/RESET',
-  entities: Entities,
-|};
+type ResetAction = {
+  type: '@@query/RESET';
+  entities: Entities;
+};
 
 export const reset = ({ entities }: ResetParams): ResetAction => {
   return {

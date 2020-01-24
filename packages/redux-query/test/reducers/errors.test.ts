@@ -1,5 +1,6 @@
 import * as actionTypes from '../../src/constants/action-types';
 import errors from '../../src/reducers/errors';
+import { Action } from '../../src/actions';
 
 describe('errors reducer', () => {
   test('should record body, text, headers on REQUEST_FAILURE', () => {
@@ -23,7 +24,7 @@ describe('errors reducer', () => {
         responseHeaders: {},
       },
     };
-    const newState = errors(prevState, action);
+    const newState = errors(prevState, action as any);
     const expectedState = {
       '{"url":"/hello"}': {
         responseBody: {
@@ -64,7 +65,7 @@ describe('errors reducer', () => {
         responseHeaders: {},
       },
     };
-    const newState = errors(prevState, action);
+    const newState = errors(prevState, action as any);
     const expectedState = {
       '{"url":"/test"}': {
         responseBody: {
@@ -107,7 +108,7 @@ describe('errors reducer', () => {
         },
       },
     };
-    const newState = errors(prevState, action);
+    const newState = errors(prevState, action as any);
     const expectedState = {
       '{"url":"/test"}': {
         responseBody: {
@@ -141,7 +142,7 @@ describe('errors reducer', () => {
         responseHeaders: {},
       },
     };
-    const newState = errors(prevState, action);
+    const newState = errors(prevState, action as any);
     const expectedState = {
       '{"url":"/test"}': {
         responseBody: {
@@ -169,7 +170,7 @@ describe('errors reducer', () => {
         },
       },
     };
-    const newState = errors(prevState, action);
+    const newState = errors(prevState, action as any);
     const expectedState = {};
     expect(newState).toEqual(expectedState);
   });

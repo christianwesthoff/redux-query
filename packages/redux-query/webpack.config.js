@@ -19,7 +19,7 @@ module.exports = {
     },
   },
   entry: {
-    'redux-query': './src/index.js',
+    'redux-query': './src/index.ts',
   },
   output: {
     path: path.join(__dirname, 'dist/umd'),
@@ -36,12 +36,19 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(mode),
     }),
   ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: path.join(__dirname, 'src'),
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
       },
     ],
   },

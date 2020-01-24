@@ -1,16 +1,14 @@
-// @flow
-
 import * as actionTypes from '../constants/action-types';
 
-import type { Action } from '../actions';
-import type { ResponseBody, ResponseHeaders, ResponseText } from '../types';
+import { Action } from '../actions';
+import { ResponseBody, ResponseHeaders, ResponseText } from '../types';
 
 export type State = {
-  [key: string]: {|
-    responseBody: ?ResponseBody,
-    responseHeaders: ?ResponseHeaders,
-    responseText: ?ResponseText,
-  |},
+  [key: string]: {
+    responseBody?: ResponseBody | undefined;
+    responseHeaders?: ResponseHeaders | undefined;
+    responseText?: ResponseText | undefined;
+  };
 };
 
 const initialState = {};
