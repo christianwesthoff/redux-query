@@ -1,7 +1,7 @@
 export const pick = (
-  source: { [key: string]: unknown },
+  source: { [key: string]: any },
   keysToPick?: Array<string> | undefined,
-): { [key: string]: unknown } => {
+): { [key: string]: any } => {
   const picked = { ...source };
   const keysToPickSet = new Set(keysToPick);
   const keysToDelete = Object.keys(source).filter(key => !keysToPickSet.has(key));

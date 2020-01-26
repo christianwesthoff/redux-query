@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/action-types';
 
 import { Action } from '../actions';
-import { QueryKey, ResponseHeaders, Status } from '../types';
+import { ResponseHeaders, Status } from '../types';
 
 export type State = {
   [key: string]: {

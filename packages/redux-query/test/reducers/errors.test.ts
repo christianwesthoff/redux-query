@@ -1,6 +1,5 @@
 import * as actionTypes from '../../src/constants/action-types';
 import errors from '../../src/reducers/errors';
-import { Action } from '../../src/actions';
 
 describe('errors reducer', () => {
   test('should record body, text, headers on REQUEST_FAILURE', () => {
