@@ -11,7 +11,7 @@ export const responseBody = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(errorsState, (_: any) => _[queryKey].responseBody);
@@ -24,7 +24,7 @@ export const responseText = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(errorsState, (_: any) => _[queryKey].responseText);
@@ -37,7 +37,7 @@ export const responseHeaders = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(errorsState, (_: any) => _[queryKey].responseHeaders);

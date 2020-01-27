@@ -13,6 +13,7 @@ import {
   Status,
   Update,
   Url,
+  QueryPattern,
 } from '../types';
 
 type RequestStartParams = {
@@ -313,6 +314,18 @@ export const mutateAsync = ({
   };
 };
 
+type ResetQueryAction = {
+  type: '@@query/RESET_QUERY';
+  queryPattern?: QueryPattern | undefined;
+};
+
+export const resetQuery = (queryPattern: QueryPattern): ResetQueryAction => {
+  return {
+    type: actionTypes.RESET_QUERY,
+    queryPattern,
+  };
+};
+
 type CancelQueryAction = {
   type: '@@query/CANCEL_QUERY';
   queryKey?: QueryKey | undefined;
@@ -358,7 +371,8 @@ export type PublicAction =
   | MutateAsyncAction
   | CancelQueryAction
   | UpdateEntitiesAction
-  | ResetAction;
+  | ResetAction
+  | ResetQueryAction;
 
 export type Action =
   | PublicAction
@@ -367,4 +381,5 @@ export type Action =
   | RequestFailureAction
   | MutateStartAction
   | MutateSuccessAction
-  | MutateFailureAction;
+  | MutateFailureAction
+  | ResetQueryAction;

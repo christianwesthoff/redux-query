@@ -2,6 +2,7 @@ import * as actionTypes from '../constants/action-types';
 
 import { Action } from '../actions';
 import { ResponseHeaders, Status } from '../types';
+import { wildcardFilter } from '../lib/array';
 
 export type State = {
   [key: string]: {
@@ -9,6 +10,7 @@ export type State = {
     isFinished: boolean;
     isMutation: boolean;
     isPending: boolean;
+    isInvalid: boolean;
     lastUpdated?: number;
     queryCount: number;
     status?: Status;
@@ -16,6 +18,16 @@ export type State = {
 };
 
 const initialState = {};
+
+const getStateKeys = (queries: State): string[] => {
+  const queryKeys: string[] = [];
+
+  for (const queryKey in queries) {
+    queryKeys.push(queryKey)
+  }
+
+  return queryKeys;
+};
 
 const queries = (state: State = initialState, action: Action): State => {
   switch (action.type) {
@@ -31,9 +43,10 @@ const queries = (state: State = initialState, action: Action): State => {
         [queryKey]: {
           isFinished: false,
           isPending: true,
+          isInvalid: false,
           isMutation: action.type === actionTypes.MUTATE_START,
-          queryCount: state[queryKey] ? state[queryKey].queryCount + 1 : 1,
-        },
+          queryCount: state[queryKey] ? state[queryKey].queryCount + 1 : 1
+        }
       };
     }
     case actionTypes.REQUEST_SUCCESS:
@@ -50,7 +63,7 @@ const queries = (state: State = initialState, action: Action): State => {
           isPending: false,
           lastUpdated: action.time,
           status: action.status,
-          headers: action.responseHeaders,
+          headers: action.responseHeaders
         },
       };
     }
@@ -66,9 +79,29 @@ const queries = (state: State = initialState, action: Action): State => {
             ...state[queryKey],
             isFinished: true,
             isPending: false,
-            status: 0,
+            status: 0
           },
         };
+      }
+
+      return state;
+    }
+    case actionTypes.RESET_QUERY: {
+      const { queryPattern } = action;
+
+      if (queryPattern) {
+
+        const stateKeys = getStateKeys(state);
+        let newState = { ...state };
+
+        for(const match in wildcardFilter(stateKeys, queryPattern)) {
+           newState = { ...newState, [match]: {
+            ...state[match],
+            isInvalid: true,
+          } }
+        }
+
+        return newState;
       }
 
       return state;

@@ -32,10 +32,12 @@
   "author": "Ryan Ashcraft <ryan@amplitude.com>",
   "license": "MIT",
   "dependencies": {
-    "backo": "^1.1.0",
+    "backo2": "^1.0.2",
+    "fast-json-stable-stringify": "^2.1.0",
     "idx": "^2.5.6",
     "invariant": "^2.2.0",
-    "json-stable-stringify": "^1.0.0"
+    "@types/backo2": "^1.0.1",
+    "@types/json-stable-stringify": "^1.0.32"
   },
   "peerDependencies": {
     "redux": "^4.0.0"

@@ -17,6 +17,19 @@ export const isFinished = (
   return idx(queriesState, (_: any) => _[queryKey].isFinished) || false;
 };
 
+export const isInvalid = (
+  queriesState: QueriesState,
+  queryConfig?: QueryConfig | undefined,
+): boolean => {
+  const queryKey = getQueryKey(queryConfig);
+
+  if (!queryKey) {
+    return false;
+  }
+
+  return idx(queriesState, (_: any) => _[queryKey].isInvalid) || false;
+};
+
 export const isPending = (
   queriesState: QueriesState,
   queryConfig?: QueryConfig | undefined,
@@ -37,7 +50,7 @@ export const status = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(queriesState, (_: any) => _[queryKey].status);
@@ -50,7 +63,7 @@ export const headers = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(queriesState, (_: any) => _[queryKey].headers);
@@ -63,7 +76,7 @@ export const lastUpdated = (
   const queryKey = getQueryKey(queryConfig);
 
   if (!queryKey) {
-    return null;
+    return undefined;
   }
 
   return idx(queriesState, (_: any) => _[queryKey].lastUpdated);

@@ -1,4 +1,4 @@
-import Backoff from 'backo';
+import Backoff from 'backo2';
 import idx from 'idx';
 
 import {
@@ -27,8 +27,11 @@ import {
   Status,
   Transform,
   Entities,
+  QueryKey,
+  AdditionalHeadersSelector
 } from '../types';
 import { State as QueriesState } from '../reducers/queries';
+import { wildcardFilter } from '../lib/array';
 
 type Config = {
   backoff: {
@@ -61,6 +64,16 @@ const defaultConfig: Config = {
   ],
 };
 
+const getQueryKeys = (queries: QueriesState): QueryKey[] => {
+  const queryKeys: QueryKey[] = [];
+
+  for (const queryKey in queries) {
+    queryKeys.push(queryKey)
+  }
+
+  return queryKeys;
+};
+
 const getPendingQueries = (queries: QueriesState): QueriesState => {
   const pendingQueries: QueriesState = {};
 
@@ -87,8 +100,10 @@ const queryMiddleware = (
   networkInterface: NetworkInterface,
   queriesSelector: QueriesSelector,
   entitiesSelector: EntitiesSelector,
-  customConfig?: Config | undefined,
+  additionalHeadersSelector?: AdditionalHeadersSelector | undefined,
+  customConfig?: Config | undefined
 ) => {
+
   const networkHandlersByQueryKey: { [key: string]: NetworkHandler } = {};
 
   const abortQuery = (queryKey: string) => {
@@ -136,10 +151,13 @@ const queryMiddleware = (
 
         const queriesState = queries[queryKey];
         const isPending = idx(queriesState, (_: any) => _.isPending);
+        const isInvalid = idx(queriesState, (_: any) => _.isInvalid);
         const status = idx(queriesState, (_: any) => _.status);
         const hasSucceeded = isStatusOk(status);
+        
+        const additionalHeaders = !!additionalHeadersSelector ? additionalHeadersSelector(state) : {};
 
-        if (force || !queriesState || (retry && !isPending && !hasSucceeded)) {
+        if (force || isInvalid || !queriesState || (retry && !isPending && !hasSucceeded)) {
           returnValue = new Promise<ActionPromiseValue>(resolve => {
             const start = new Date();
             const { method = httpMethods.GET as HttpMethod } = options;
@@ -152,7 +170,7 @@ const queryMiddleware = (
             const attemptRequest = () => {
               const networkHandler = networkInterface(url, method, {
                 body,
-                headers: options.headers,
+                headers: { ...options.headers, ...additionalHeaders },
                 credentials: options.credentials,
               });
 
@@ -286,13 +304,15 @@ const queryMiddleware = (
           throw new Error('Failed to generate queryKey for mutation');
         }
 
+        const additionalHeaders = !!additionalHeadersSelector ? additionalHeadersSelector(initialState) : {};
+
         returnValue = new Promise<ActionPromiseValue>(resolve => {
           const start = new Date();
           const { method = httpMethods.POST as HttpMethod } = options;
 
           const networkHandler = networkInterface(url, method, {
             body,
-            headers: options.headers,
+            headers: { ...options.headers, ...additionalHeaders },
             credentials: options.credentials,
           });
 
@@ -388,6 +408,27 @@ const queryMiddleware = (
             delete networkHandlersByQueryKey[queryKey];
           });
         });
+
+        break;
+      }
+      case actionTypes.RESET_QUERY: {
+        const { queryPattern } = action;
+
+        if (!queryPattern) {
+          throw new Error('Missing required queryPattern field');
+        }
+
+        const state = getState();
+        const queries = queriesSelector(state);
+        const pendingQueries = getPendingQueries(queries);
+        const queryKeys = getQueryKeys(queries);
+
+        for(const match in wildcardFilter(queryKeys, queryPattern)) {
+            if (match in pendingQueries) {
+              abortQuery(queryPattern);
+              returnValue = next(action);
+            }
+        }
 
         break;
       }

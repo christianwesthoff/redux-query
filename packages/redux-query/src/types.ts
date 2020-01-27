@@ -36,6 +36,8 @@ export type Meta = { [key: string]: any };
 
 export type QueryKey = string;
 
+export type QueryPattern = string;
+
 export type ResponseBody = any;
 
 export type ResponseText = string;
@@ -84,6 +86,8 @@ export type NetworkInterface = (
   networkOptions: NetworkOptions,
 ) => NetworkHandler;
 
+export type AdditionalHeadersSelector = (state: any) => { [key: string]: string };
+
 export type QueriesSelector = (state: any) => QueriesState;
 
 export type EntitiesSelector = (state: any) => EntitiesState;
@@ -101,3 +105,12 @@ export type ActionPromiseValue = {
 };
 
 export type Action = PublicAction;
+
+export type RequestConfig = {
+  backoff: {
+    maxAttempts: number;
+    minDuration: number;
+    maxDuration: number;
+  };
+  retryableStatusCodes: Array<Status>;
+};

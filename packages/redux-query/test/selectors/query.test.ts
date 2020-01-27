@@ -11,7 +11,7 @@ describe('query selectors', () => {
           name: 'My KPIs',
         },
       };
-      const queryKey = getQueryKey(queryConfig);
+      const queryKey = getQueryKey(queryConfig)!;
       const isFinished = querySelectors.isFinished(
         {
           [queryKey]: {
@@ -51,7 +51,7 @@ describe('query selectors', () => {
           name: 'My KPIs',
         },
       };
-      const queryKey = getQueryKey(queryConfig);
+      const queryKey = getQueryKey(queryConfig)!;
       const isPending = querySelectors.isPending(
         {
           [queryKey]: {
@@ -91,7 +91,7 @@ describe('query selectors', () => {
           name: 'My KPIs',
         },
       };
-      const queryKey = getQueryKey(queryConfig);
+      const queryKey = getQueryKey(queryConfig)!;
       const status = querySelectors.status(
         {
           [queryKey]: {
@@ -131,7 +131,7 @@ describe('query selectors', () => {
           name: 'My KPIs',
         },
       };
-      const queryKey = getQueryKey(queryConfig);
+      const queryKey = getQueryKey(queryConfig)!;
       const lastUpdated = querySelectors.lastUpdated(
         {
           [queryKey]: {
@@ -171,7 +171,7 @@ describe('query selectors', () => {
           name: 'My KPIs',
         },
       };
-      const queryKey = getQueryKey(queryConfig);
+      const queryKey = getQueryKey(queryConfig)!;
       const queryCount = querySelectors.queryCount(
         {
           [queryKey]: {

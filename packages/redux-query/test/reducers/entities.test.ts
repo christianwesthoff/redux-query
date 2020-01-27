@@ -120,11 +120,11 @@ describe('entities reducer', () => {
     const action = {
       type: actionTypes.UPDATE_ENTITIES,
       update: {
-        some: value => ({
+        some: (value: any) => ({
           ...value,
           thing: {},
         }),
-        something: value => ({
+        something: (value: any) => ({
           ...value,
           else: {},
         }),
