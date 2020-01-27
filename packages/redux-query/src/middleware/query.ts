@@ -136,10 +136,11 @@ const queryMiddleware = (
 
         const queriesState = queries[queryKey];
         const isPending = idx(queriesState, (_: any) => _.isPending);
+        const isInvalid = idx(queriesState, (_: any) => _.isInvalid);
         const status = idx(queriesState, (_: any) => _.status);
         const hasSucceeded = isStatusOk(status);
 
-        if (force || !queriesState || (retry && !isPending && !hasSucceeded)) {
+        if (force || isInvalid || !queriesState || (retry && !isPending && !hasSucceeded)) {
           returnValue = new Promise<ActionPromiseValue>(resolve => {
             const start = new Date();
             const { method = httpMethods.GET as HttpMethod } = options;
@@ -391,6 +392,7 @@ const queryMiddleware = (
 
         break;
       }
+      case actionTypes.RESET_QUERY:
       case actionTypes.CANCEL_QUERY: {
         const { queryKey } = action;
 

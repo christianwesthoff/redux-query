@@ -9,6 +9,7 @@ export type State = {
     isFinished: boolean;
     isMutation: boolean;
     isPending: boolean;
+    isInvalid: boolean;
     lastUpdated?: number;
     queryCount: number;
     status?: Status;
@@ -31,6 +32,7 @@ const queries = (state: State = initialState, action: Action): State => {
         [queryKey]: {
           isFinished: false,
           isPending: true,
+          isInvalid: false,
           isMutation: action.type === actionTypes.MUTATE_START,
           queryCount: state[queryKey] ? state[queryKey].queryCount + 1 : 1,
         },
@@ -72,6 +74,16 @@ const queries = (state: State = initialState, action: Action): State => {
       }
 
       return state;
+    }
+    case actionTypes.RESET_QUERY: {
+      const { queryKey } = action;
+      return {
+        ...state,
+        [queryKey]: {
+          ...state[queryKey],
+          isInvalid: true,
+        },
+      };
     }
     default: {
       return state;
